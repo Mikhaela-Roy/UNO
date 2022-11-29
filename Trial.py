@@ -25,6 +25,7 @@ for i, c in enumerate(contours):         # loop through all the found contours
     contours = sorted(contours, key=cv2.boundingRect, reverse=True)
 
     x,y,w,h = cv2.boundingRect(c)
+    
     cv2.drawContours(cropped_img, [c], 0, (0, 255, 0), 1)   # paint contour c
     cv2.putText(cropped_img, str(i), (c[0, 0, 0]+20, c[0, 0, 1]+30), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 255))
 
