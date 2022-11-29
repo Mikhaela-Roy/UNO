@@ -1,5 +1,4 @@
 import cv2
-import skimage
 
 img= cv2.imread('./UNO images/b1.jpg') # img = cv2.imread('./images/r5.jpg') # 
 ##cv2.imshow('image',img)
@@ -21,16 +20,20 @@ for i, c in enumerate(contours):         # loop through all the found contours
     area = cv2.contourArea(c)
     print('perimeter: ', perimeter)
     print('area: ', area)
-    
+
+    contours = contours[0] if len(contours) == 2 else contours[1]
+    contours = sorted(contours, key=cv2.boundingRect, reverse=True)
+
+    x,y,w,h = cv2.boundingRect(c)
     cv2.drawContours(cropped_img, [c], 0, (0, 255, 0), 1)   # paint contour c
     cv2.putText(cropped_img, str(i), (c[0, 0, 0]+20, c[0, 0, 1]+30), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 255))
 
-    #crop = img[y:y+h, x:x+w].copy()
+    crop = img[y:y+h, x:x+w].copy()
     
     
 #cv2.namedWindow('picture', cv2.WINDOW_NORMAL)
 #cv2.imshow('card', img)
-cv2.imshow('cropped',cropped_img)
+cv2.imshow('cropped',crop)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
