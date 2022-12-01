@@ -5,7 +5,7 @@ import glob
 img= cv2.imread('./UNO images/g8.jpg') #missing: bS, bT, bR
 
 ##path = glob.glob('C:/Users/Mikhaela Rain Roy/Desktop/UNO/UNO images/*.jpg')
-
+##
 ##for file in path:
 ##    img = cv2.imread(file)
 ##    cv2.imshow("Image",img)
@@ -49,6 +49,6 @@ for i, c in enumerate(contours):         # loop through all the found contours
     readimage = cv2.imread(image_name)
     cv2.imshow('Image', crop)
 
-#cv2.imshow('Original', img)
+cv2.imshow('Original', img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
