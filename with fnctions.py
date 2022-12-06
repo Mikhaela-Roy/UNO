@@ -30,15 +30,46 @@ def crop(img):
         contours = sorted(contours, key = cv2.contourArea, reverse = False)
         
         x,y,w,h = cv2.boundingRect(c)
-        cropped = img[y:y+h, x:x+w]
+        cropped = img_canny[y:y+h, x:x+w]
 
         if perimeter >= 400 or perimeter <=200:
             continue
 
         cv2.imshow('Image', cropped)
+
+        image_name = "output_shape_number_" + str(i+1) + ".jpg"
+        cv2.imwrite(image_name, cropped)
+        readimage = cv2.imread(image_name)
+        
         cv2.waitKey(0)
         cv2.destroyAllWindows()
 
 for image in path:
     img = cv2.imread(image)
+    
     crop(img)
+
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
+    red_lower = np.array([136, 87, 111])
+    red_upper = np.array([180, 255, 255])
+    red_mask = cv2.inRange(hsv, red_lower, red_upper)
+  
+    # Set range for green color and 
+    # define mask
+    green_lower = np.array([25, 52, 72])
+    green_upper = np.array([102, 255, 255])
+    green_mask = cv2.inRange(hsv, green_lower, green_upper)
+  
+    # Set range for blue color and
+    # define mask
+    blue_lower = np.array([94, 80, 2])
+    blue_upper = np.array([120, 255, 255])
+    blue_mask = cv2.inRange(hsv, blue_lower, blue_upper)
+
+    result = red_mask + green_mask + blue_mask
+    output = cv2.bitwise_and(img, img, mask = result)
+
+    cv2.imshow('Colour Detected', np.hstack((img,output)))
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
