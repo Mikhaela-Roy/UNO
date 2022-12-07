@@ -30,7 +30,7 @@ def crop(img):
         contours = sorted(contours, key = cv2.contourArea, reverse = False)
         
         x,y,w,h = cv2.boundingRect(c)
-        cropped = img_canny[y:y+h, x:x+w]
+        cropped = img_canny[y:y+h, x-20:x+w+20]
 
         if perimeter >= 400 or perimeter <=200:
             continue
@@ -45,31 +45,43 @@ def crop(img):
         cv2.destroyAllWindows()
 
 for image in path:
+    
     img = cv2.imread(image)
     
     crop(img)
 
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
-    red_lower = np.array([136, 87, 111])
+    # Set range for red color and
+    # define mask
+    red_lower = np.array([0, 50, 20])
     red_upper = np.array([180, 255, 255])
     red_mask = cv2.inRange(hsv, red_lower, red_upper)
   
     # Set range for green color and 
     # define mask
-    green_lower = np.array([25, 52, 72])
+    green_lower = np.array([45, 100, 50])
     green_upper = np.array([102, 255, 255])
     green_mask = cv2.inRange(hsv, green_lower, green_upper)
   
     # Set range for blue color and
     # define mask
-    blue_lower = np.array([94, 80, 2])
-    blue_upper = np.array([120, 255, 255])
+    blue_lower = np.array([87, 150, 80])
+    blue_upper = np.array([117, 255, 255])
     blue_mask = cv2.inRange(hsv, blue_lower, blue_upper)
 
-    result = red_mask + green_mask + blue_mask
+    # Set range for yellow color and
+    # define mask
+    yellow_lower = np.array([15, 90, 80])
+    yellow_upper = np.array([40, 255, 255])
+    yellow_mask = cv2.inRange(hsv, yellow_lower, yellow_upper)
+
+    #Adding all the colours to identify range of colours from red to yellow
+    #in an image
+    result = red_mask + green_mask + blue_mask + yellow_mask
     output = cv2.bitwise_and(img, img, mask = result)
 
-    cv2.imshow('Colour Detected', np.hstack((img,output)))
+    #Shows original image against the colour detection image
+    cv2.imshow('Colour Detected', output)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
