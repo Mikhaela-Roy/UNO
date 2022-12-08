@@ -1,10 +1,15 @@
 import cv2
 import numpy as np
 import glob
+from sklearn import datasets
+import pandas
+import joblib
 
 path = glob.glob('C:/Users/Mikhaela Rain Roy/Desktop/UNO/UNO images/*.jpg')
 
+
 def crop(img):
+    
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     thr_value, img_thresh = cv2.threshold(img_gray, 150, 255, cv2.THRESH_BINARY)
     img_canny = cv2.Canny(img_thresh, 50, 100)    # standard canny edge detector
@@ -44,12 +49,43 @@ def crop(img):
         cv2.waitKey(0)
         cv2.destroyAllWindows()
 
-for image in path:
-    
-    img = cv2.imread(image)
-    
-    crop(img)
+def make_csv(img):
+    arr = np.asarray(img)
+    lst = []
+    for row in arr:
+        tmp = []
+        for col in row:
+            tmp.append(str(col))
+        lst.append(tmp)
+        
+    with open('uno_card.csv','w') as f:
+        for row in lst:
+            f.write(','.join(row) + '\n')
 
+def save_model():
+    
+    url = ('uno_cards')
+   # names = ['preg', 'plas', 'pres', 'skin', 'test', 'mass', 'pedi', 'age', 'class']
+    dataframe = pandas.read_csv(url)
+    array = dataframe.values
+    X = array[:,0:8]
+    Y = array[:,8]
+    test_size = 0.28
+    seed = 7
+    X_train, X_test, Y_train, Y_test = model_selection.train_test_split(X,Y,test_size=test_sixe, random_state = seed)
+    model = LogisticRegression()
+    model.fit(X_train, Y_train)
+    filename = 'finalised_model.sav'
+    joblib.dump(model, filename)
+
+    loaded_model = joblib.load(filename)
+    result = loaded_model.score(X_test, Y_test)
+    print(result)
+
+def colourdetect(img):
+
+    crop(img)
+    
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
     # Set range for red color and
@@ -85,3 +121,12 @@ for image in path:
     cv2.imshow('Colour Detected', output)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+    
+for image in path:
+    
+    img = cv2.imread(image)
+    
+    #colourdetect(img)
+#make_csv(img)
+
+save_model()   
