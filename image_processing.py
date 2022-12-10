@@ -3,38 +3,48 @@ import glob
 import numpy as np
 from matplotlib import pyplot as plt
 
-video = cv2.VideoCapture(0)
+vc = cv2.VideoCapture(0)
 
 path = ('C:/Users/Mikhaela Rain Roy/Desktop/UNO/Training/image.jpg')
-#frame = video.read()
-while video.isOpened():
-    rval, frame = video.read()
-    cv2.imshow('stream',frame)
 
+##while video.isOpened():
+##    rval, frame = video.read()
+##    cv2.imshow('stream',frame)
+##
+##    key = cv2.waitKey(1)
+##    if key == 27:
+##        break
+##
+##cv2.destroyAllWindows()
+##video.release()
+##
+##save  = cv2.imwrite('C:/Users/Mikhaela Rain Roy/Desktop/UNO/Training/image.jpg',frame)
+##image =cv2.imread('C:/Users/Mikhaela Rain Roy/Desktop/UNO/Training/image.jpg')
+##
+##scale = 60
+##width = int(image.shape[1]*scale/100)
+##height =int(image.shape[0]*scale/100)
+##dimensions = (width, height)
+##resize_img = cv2.resize(image, dimensions)
+
+while vc.isOpened():
+    rval, frame = vc.read()
+    img_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    kernel = np.ones((3,3),np.uint8)
+    thr_value, img_thresh = cv2.threshold(img_gray, 120, 255,cv2.THRESH_BINARY_INV)
+    img_thresh = cv2.adaptiveThreshold(img_thresh, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 70, 2)
+    img_close = cv2.morphologyEx(img_thresh, cv2.MORPH_CLOSE, kernel, iterations = 2)
+    img_canny = cv2.Canny(img_close, 100, 200)
+    contours, hierarchy = cv2.findContours(img_canny, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    cv2.drawContours(frame, contours, -1,(50,255,0),1)
+    cv2.imshow("stream", frame)
     key = cv2.waitKey(1)
     if key == 27:
         break
-
-cv2.destroyAllWindows()
-video.release()
-
-save  = cv2.imwrite('C:/Users/Mikhaela Rain Roy/Desktop/UNO/Training/image.jpg',frame)
-image =cv2.imread('C:/Users/Mikhaela Rain Roy/Desktop/UNO/Training/image.jpg')
-
-scale = 60
-width = int(image.shape[1]*scale/100)
-height =int(image.shape[0]*scale/100)
-dimensions = (width, height)
-resize_img = cv2.resize(image, dimensions)
-
-thr_value, img_thresh = cv2.threshold(resize_img, 150, 255, cv2.THRESH_BINARY)
-img_canny = cv2.Canny(img_thresh, 50, 100)    # standard canny edge detector
-contours, hierarchy = cv2.findContours(image,cv2.RETR_TREE,cv2.CHAIN_APPROX_NONE) #contours is not an image, is a chain of pixel locations
-
-cv2.imshow('Thresh', img_thresh)
-
-
-    
+        
+cv2.destroyAllWindows("stream")  
+vc.release()
+  
 ##    contours = sorted(contours, key = cv2.contourArea, reverse = False)
 ##
 ##    for i, c in enumerate(contours):         # loop through all the found contours
