@@ -18,12 +18,11 @@ FileList = ListofFiles(('C:/Users/Mikhaela Rain Roy/Desktop/UNO/UNO images'))
 
 pixels = []
 
-
 for file in FileList:
     Im= Image.open(file)
     pixels.append(list(Im.getdata()))
     
-print(pixels)
+    print(pixels)
 
 ##pixels_arr = np.asarray(pixels)
 ##print(pixels_arr.shape)
