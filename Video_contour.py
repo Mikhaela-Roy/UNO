@@ -53,7 +53,7 @@ while vc.isOpened():
         [x,y,w,h] = cv2.boundingRect(c)
         areaContour = cv2.contourArea(c)
 
-        if areaContour > 2000 or 100000 < areaContour:
+        if areaContour > 200 or 10000 < areaContour:
             continue
         cv2.rectangle(frame, (x,y), (x+w,y+h), (255,0,0),2)
         #cv2.putText(frame, str(i), (c[0,0,0]+20,c[0,0,1]+30), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 255))

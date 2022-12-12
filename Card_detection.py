@@ -1,9 +1,10 @@
 import cv2
 import numpy as np
 import time
-import with_fnctions
+import Overlaying_card
 import os
 
+#https://github.com/EdjeElectronics/OpenCV-Playing-Card-Detector
 img_width = 1280
 img_height = 720
 f_rate = 10
@@ -17,8 +18,8 @@ video = cv2.VideoCapture(0)
 time.sleep(1)
 
 path = os.path.dirname(os.path.abspath('C:/Users/Mikhaela Rain Roy/Desktop/UNO/Training'))
-train_ranks = with_fnctions.load_rank(path + '/Training/')
-train_colour = with_fnctions.load_colour(path + '/Training')
+train_ranks = Overlaying_card.load_rank(path + '/Training/')
+train_colour = Overlaying_card.load_colour(path + '/Training')
 
 while (1):
     
@@ -26,8 +27,8 @@ while (1):
 
     t1 = cv2.getTickCount()
 
-    pre_proc = with_fnctions.preprocess(image)
-    cnts_sort, cnt_is_card = with_fnctions.find_cards(pre_proc)
+    pre_proc = Overlaying_card.preprocess(image)
+    cnts_sort, cnt_is_card = Overlaying_card.find_cards(pre_proc)
 
     if len(cnts_sort) != 0:
         cards = []
@@ -35,9 +36,9 @@ while (1):
 
         for i in range(len(cnts_sort)):
             if (cnt_is_card[i] == 1):
-                cards.append(with_fnctions.preprocess_card(cnts_sort[i], image))
+                cards.append(Overlaying_card.preprocess_card(cnts_sort[i], image))
                 cards[k].best_rank_match, cards[k].best_colour_match, cards[k].rank_diff, cards[k].colour.diff = with_fnctions.match_card(cards[k], Train, Train_colour)
-                image = with_fnctions.draw_results(image, cards[k])
+                image = Overlaying_card.draw_results(image, cards[k])
                 k += 1
 
         if (len(cards) != 0):

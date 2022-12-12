@@ -2,7 +2,6 @@ import numpy as np
 import cv2 
 import glob
 import os
-from tensorflow.keras.models import load_model
 
 vc = cv2.VideoCapture(0)
 
@@ -39,9 +38,6 @@ def compare():
     cv2.imshow('Match',image)
 
 def num_detect(vc):
-
-    WIDTH = vc.get(cv2.CAP_PROP_FRAME_WIDTH)
-    HEIGHT = vc.get(cv2.CAP_PROP_FRAME_HEIGHT)
     
     while vc.isOpened():
 
