@@ -38,14 +38,9 @@ for file in image:
         crop = img_canny[y-10:y+h+5, x-20:x+w+30]
 
         #0 (229.33), 1 (208.77), 2
-##        if perimeter >= 250 or perimeter <=200 : #cards: (0, 1, 4)
-##            continue
-##        if perimeter >= 400 or perimeter <= 350: #cards: (2, 3, 5)
-##            continue
-##        if perimeter >= 350 or perimeter <= 300: #cards: (6, 9)
-##            continue
-##        if perimeter >= 300 or perimeter <= 250: #cards: (7,8)
-##            continue
+        if perimeter >= 400 or perimeter <= 200:
+            continue
+        
         image_name = "output_shape_number_" + str(i+1) + ".jpg"
         cv2.imwrite(image_name, crop)
         readimage = cv2.imread(image_name)
