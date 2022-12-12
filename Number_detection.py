@@ -62,4 +62,5 @@ def num_detect(vc):
         
     cv2.destroyAllWindows()
     vc.release()
+    
 num_detect(vc)

@@ -2,7 +2,8 @@ import cv2
 import numpy as np
 import os 
 
-path = ('C:/Users/Mikhaela Rain Roy/Desktop/UNO/UNO images')
+#opencv documentation
+path = ('C:/Users/Mikhaela Rain Roy/Desktop/UNO/UNO_images')
 
 orb = cv2.ORB_create(nfeatures = 1000)
 
