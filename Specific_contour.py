@@ -35,17 +35,18 @@ for file in image:
         
         contours = sorted(contours, key = cv2.contourArea, reverse = False)
         x,y,w,h = cv2.boundingRect(c)
-        crop = img_canny[y-10:y+h+5, x-20:x+w+30]
-
+        crop = erosion[y-10:y+h+5, x-20:x+w+30]
+        f_vertical = cv2.rotate(crop, cv2.ROTATE_90_COUNTERCLOCKWISE)
+        
         #0 (229.33), 1 (208.77), 2
         if perimeter >= 400 or perimeter <= 200:
             continue
         
         image_name = "output_shape_number_" + str(i+1) + ".jpg"
-        cv2.imwrite(image_name, crop)
+        cv2.imwrite(image_name, f_vertical)
         readimage = cv2.imread(image_name)
         
-        cv2.imshow('Image', crop)
+        cv2.imshow('Image', f_vertical)
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()
