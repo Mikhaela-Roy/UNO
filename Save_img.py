@@ -10,6 +10,7 @@ from PIL import Image
 path = glob.glob('C:/Users/Mikhaela Rain Roy/Desktop/UNO/UNO images/*.jpg')
 
 def save(img):
+    
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     thr_value, img_thresh = cv2.threshold(img_gray, 150, 255, cv2.THRESH_BINARY)
     img_canny = cv2.Canny(img_thresh, 50, 100)    # standard canny edge detector
@@ -19,8 +20,6 @@ def save(img):
     dilation = cv2.dilate(img_close, kernel,iterations = 1)
     erosion = cv2.erode(dilation, kernel, iterations = 1)
     dst = cv2.filter2D(erosion,-1,kernel)
-
-    features = []
 
     for i, c in enumerate(contours):         # loop through all the found contours
         
@@ -37,18 +36,16 @@ def save(img):
         conoturs = sorted(contours, key = cv2.contourArea, reverse = True)
         
         x,y,w,h = cv2.boundingRect(c)
-        cropped = img_canny[y:y+h, x-20:x+w+20]
+        cropped = img[y:y+h, x-20:x+w+20]
 
-        if perimeter >= 400 or perimeter <=200:
+        if perimeter >= 400 or perimeter <=  200:
             continue
-        
-        features.append([area, perimeter])
-        
-        cv2.imshow('Image', cropped)
 
-##        image_name = "output_shape_number_" + str(i+1) + ".jpg"
-##        cv2.imwrite(image_name, cropped)
-##        readimage = cv2.imread(image_name)
+        image_name = "output_shape_number_" + str(i+1) + ".jpg"
+        cv2.imwrite(image_name, cropped)
+        readimage = cv2.imread(image_name)
+
+        cv2.imshow('Image', cropped)
         
         cv2.waitKey(0)
         cv2.destroyAllWindows()
@@ -56,4 +53,5 @@ def save(img):
 for image in path:
     
     img = cv2.imread(image)
+
     save(img)

@@ -32,7 +32,7 @@ while vc.isOpened():
     img_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     kernel = np.ones((3,3),np.uint8)
     thr_value, img_thresh = cv2.threshold(img_gray, 120, 255,cv2.THRESH_BINARY_INV)
-    img_thresh = cv2.adaptiveThreshold(img_thresh, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 70, 2)
+    thresh = cv2.adaptiveThreshold(img_thresh, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 70, 2)
     img_close = cv2.morphologyEx(img_thresh, cv2.MORPH_CLOSE, kernel, iterations = 2)
     img_canny = cv2.Canny(img_close, 100, 200)
     contours, hierarchy = cv2.findContours(img_canny, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
