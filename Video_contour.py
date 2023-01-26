@@ -41,7 +41,6 @@ while vc.isOpened():
     img_canny = cv2.Canny(frame, 100,200)
     contours, hierarchy = cv2.findContours(img_canny, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     
-
     contours = sorted(contours, key = cv2.contourArea, reverse = False)
     
     for i, c in enumerate(contours):

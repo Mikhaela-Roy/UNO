@@ -44,13 +44,6 @@ def num_detect(vc):
         rval, frame = vc.read()
         copy = frame.copy()
 
-        box_size = (100,100)
-        box = [(int(WIDTH//2-box_size[0]//2),int(HEIGHT//2-box_size[1]//2)),
-               (int(WIDTH//2+box_size[0]//2),int(HEIGHT//2+box_size[1]//2))]
-        img_crop = frame[box[0][1]:box[1][1], box[0][0]:box[1][0]]
-        img_gray = cv2.cvtColor(img_crop, cv2.COLOR_BGR2GRAY)
-
-        cv2.imshow('Cropped', img_gray)
         cv2.imshow('Input',copy)
         
         key = cv2.waitKey(1)
@@ -62,5 +55,4 @@ def num_detect(vc):
         
     cv2.destroyAllWindows()
     vc.release()
-    
 num_detect(vc)
